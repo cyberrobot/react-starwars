@@ -1,7 +1,6 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { AppShell as MantineAppShell, Header, Title, MantineProvider, } from '@mantine/core';
+import { AppShell as MantineAppShell, MantineProvider, } from '@mantine/core';
+import { HeaderTabs } from './Header/Header';
 export function AppShell({ title }) {
-    return (_jsx(MantineProvider, Object.assign({ withGlobalStyles: true, withNormalizeCSS: true }, { children: _jsx(MantineAppShell, Object.assign({ padding: "md", header: _jsx(Header, Object.assign({ height: 60, p: "xs", sx: {
-                    display: 'flex',
-                } }, { children: _jsx(Title, { children: title }) })) }, { children: _jsx("div", { children: "Hello" }) })) })));
+    return (_jsx(MantineProvider, Object.assign({ withGlobalStyles: true, withNormalizeCSS: true }, { children: _jsx(MantineAppShell, Object.assign({ padding: 0 }, { children: _jsx(HeaderTabs, { tabs: ['Home', 'People', 'Planets', 'Starships'] }) })) })));
 }

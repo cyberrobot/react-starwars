@@ -4,6 +4,7 @@ import {
   Title,
   MantineProvider,
 } from '@mantine/core';
+import { HeaderTabs } from './Header/Header';
 export interface AppShellProps {
   title: string;
 }
@@ -11,21 +12,8 @@ export interface AppShellProps {
 export function AppShell({ title }: AppShellProps) {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS>
-      <MantineAppShell
-        padding="md"
-        header={
-          <Header
-            height={60}
-            p="xs"
-            sx={{
-              display: 'flex',
-            }}
-          >
-            <Title>{title}</Title>
-          </Header>
-        }
-      >
-        <div>Hello</div>
+      <MantineAppShell padding={0}>
+        <HeaderTabs tabs={['Home', 'People', 'Planets', 'Starships']} />
       </MantineAppShell>
     </MantineProvider>
   );
