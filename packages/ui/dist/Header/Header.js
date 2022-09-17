@@ -1,5 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { createStyles, Container, Tabs } from '@mantine/core';
+import { useNavigate } from '@tanstack/react-location';
 import { StarWars } from '../Icons';
 const useStyles = createStyles((theme) => ({
     inner: {
@@ -44,7 +45,8 @@ const useStyles = createStyles((theme) => ({
 }));
 export function HeaderTabs({ tabs }) {
     const { classes } = useStyles();
-    const items = tabs.map((tab) => (_jsx(Tabs.Tab, Object.assign({ value: tab }, { children: tab }), tab)));
+    const navigate = useNavigate();
+    const items = tabs.map((tab) => (_jsx(Tabs.Tab, Object.assign({ value: tab, onClick: () => navigate({ to: tab.toLowerCase() === 'home' ? '/' : tab.toLowerCase() }) }, { children: tab }), tab)));
     return (_jsx("div", Object.assign({ className: classes.header }, { children: _jsxs(Container, Object.assign({ className: classes.inner }, { children: [_jsx(StarWars, {}), _jsx(Tabs, Object.assign({ defaultValue: "Home", variant: "outline", classNames: {
                         root: classes.tabs,
                         tabsList: classes.tabsList,

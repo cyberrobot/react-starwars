@@ -1,4 +1,5 @@
 import { createStyles, Container, Tabs } from '@mantine/core';
+import { useNavigate } from '@tanstack/react-location';
 import { StarWars } from '../Icons';
 
 const useStyles = createStyles((theme) => ({
@@ -61,9 +62,16 @@ interface HeaderTabsProps {
 
 export function HeaderTabs({ tabs }: HeaderTabsProps) {
   const { classes } = useStyles();
+  const navigate = useNavigate();
 
   const items = tabs.map((tab) => (
-    <Tabs.Tab value={tab} key={tab}>
+    <Tabs.Tab
+      value={tab}
+      key={tab}
+      onClick={() =>
+        navigate({ to: tab.toLowerCase() === 'home' ? '/' : tab.toLowerCase() })
+      }
+    >
       {tab}
     </Tabs.Tab>
   ));
