@@ -1,10 +1,11 @@
-import { createStyles, Container, Tabs } from '@mantine/core';
+import { createStyles, Container, Tabs, Header } from '@mantine/core';
 import { useNavigate } from '@tanstack/react-location';
 import { StarWars } from '../Icons';
 
 const useStyles = createStyles((theme) => ({
   header: {
     paddingTop: theme.spacing.sm,
+    paddingLeft: theme.spacing.sm,
     backgroundColor:
       theme.colorScheme === 'dark'
         ? theme.colors.dark[6]
@@ -12,7 +13,6 @@ const useStyles = createStyles((theme) => ({
     borderBottom: `1px solid ${
       theme.colorScheme === 'dark' ? 'transparent' : theme.colors.gray[2]
     }`,
-    marginBottom: 20,
   },
 
   tabs: {
@@ -69,20 +69,18 @@ export function HeaderTabs({ tabs }: HeaderTabsProps) {
   ));
 
   return (
-    <div className={classes.header}>
-      <Container>
-        <Tabs
-          defaultValue="Home"
-          variant="outline"
-          classNames={{
-            root: classes.tabs,
-            tabsList: classes.tabsList,
-            tab: classes.tab,
-          }}
-        >
-          <Tabs.List>{items}</Tabs.List>
-        </Tabs>
-      </Container>
-    </div>
+    <Header height={50} className={classes.header}>
+      <Tabs
+        defaultValue="Home"
+        variant="outline"
+        classNames={{
+          root: classes.tabs,
+          tabsList: classes.tabsList,
+          tab: classes.tab,
+        }}
+      >
+        <Tabs.List>{items}</Tabs.List>
+      </Tabs>
+    </Header>
   );
 }

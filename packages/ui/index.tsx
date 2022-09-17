@@ -7,6 +7,7 @@ import {
   Router,
 } from '@tanstack/react-location';
 import { routes } from './routes/routes';
+import { Navigation } from './Navigation';
 
 const history = createBrowserHistory();
 const location = new ReactLocation({ history });
@@ -18,9 +19,14 @@ export function AppShell({ title }: AppShellProps) {
   return (
     <Router routes={routes} location={location}>
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <MantineAppShell padding={0}>
-          <HeaderTabs tabs={['Home', 'People', 'Planets', 'Starships']} />
-          <Outlet />
+        <MantineAppShell
+          padding={0}
+          header={
+            <HeaderTabs tabs={['Home', 'People', 'Planets', 'Starships']} />
+          }
+          navbar={<Navigation />}
+        >
+          Hello
         </MantineAppShell>
       </MantineProvider>
     </Router>
