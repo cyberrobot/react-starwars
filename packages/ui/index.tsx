@@ -1,10 +1,5 @@
-import {
-  AppShell as MantineAppShell,
-  Header,
-  Title,
-  MantineProvider,
-} from '@mantine/core';
-import { HeaderTabs } from './Header/Header';
+import { AppShell as MantineAppShell, MantineProvider } from '@mantine/core';
+import { HeaderTabs } from './Header';
 import {
   createBrowserHistory,
   Outlet,

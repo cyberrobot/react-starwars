@@ -1,6 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { AppShell as MantineAppShell, MantineProvider, } from '@mantine/core';
-import { HeaderTabs } from './Header/Header';
+import { AppShell as MantineAppShell, MantineProvider } from '@mantine/core';
+import { HeaderTabs } from './Header';
 import { createBrowserHistory, Outlet, ReactLocation, Router, } from '@tanstack/react-location';
 import { routes } from './routes/routes';
 const history = createBrowserHistory();
