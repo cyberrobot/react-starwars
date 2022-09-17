@@ -2,8 +2,16 @@ import { createStyles, Container, Tabs } from '@mantine/core';
 import { StarWars } from '../Icons';
 
 const useStyles = createStyles((theme) => ({
+  inner: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'end',
+
+    [theme.fn.smallerThan('sm')]: {
+      justifyContent: 'flex-start',
+    },
+  },
   header: {
-    paddingTop: theme.spacing.sm,
     backgroundColor:
       theme.colorScheme === 'dark'
         ? theme.colors.dark[6]
@@ -62,10 +70,8 @@ export function HeaderTabs({ tabs }: HeaderTabsProps) {
 
   return (
     <div className={classes.header}>
-      <Container>
+      <Container className={classes.inner}>
         <StarWars />
-      </Container>
-      <Container>
         <Tabs
           defaultValue="Home"
           variant="outline"
