@@ -12,7 +12,7 @@ importers:
       prettier: 2.7.1
       turbo: 1.4.6
 
-  apps/movies:
+  apps/people:
     specifiers:
       '@emotion/react': ^11.10.4
       '@mantine/core': ^5.3.0
@@ -50,6 +50,18 @@ importers:
       ui: link:../../packages/ui
       web-vitals: 2.1.4
 
+  packages/api:
+    specifiers:
+      eslint: ^7.32.0
+      eslint-config-custom: workspace:*
+      tsconfig: workspace:*
+      typescript: ^4.5.2
+    devDependencies:
+      eslint: 7.32.0
+      eslint-config-custom: link:../eslint-config-custom
+      tsconfig: link:../tsconfig
+      typescript: 4.8.3
+
   packages/eslint-config-custom:
     specifiers:
       eslint: ^7.23.0
@@ -75,6 +87,7 @@ importers:
       '@emotion/react': ^11.10.4
       '@mantine/core': ^5.3.0
       '@mantine/hooks': ^5.3.0
+      '@tanstack/react-location': ^3.7.4
       '@types/react': ^18.0.17
       '@types/react-dom': ^18.0.6
       eslint: ^7.32.0
@@ -86,6 +99,7 @@ importers:
       '@emotion/react': 11.10.4_2b7cc62bf342db2e3fe04a94b3d283aa
       '@mantine/core': 5.3.0_370325b6103db7b1149c1108f8c507fa
       '@mantine/hooks': 5.3.0_react@18.2.0
+      '@tanstack/react-location': 3.7.4_react@18.2.0
     devDependencies:
       '@types/react': 18.0.19
       '@types/react-dom': 18.0.6
@@ -2675,6 +2689,18 @@ packages:
       - supports-color
     dev: false
 
+  /@tanstack/react-location/3.7.4_react@18.2.0:
+    resolution: {integrity: sha512-6rH2vNHGr0uyeUz5ZHvWMYjeYKGgIKFzvs5749QtnS9f+FU7t7fQE0hKZAzltBZk82LT7iYbcHBRyUg2lW13VA==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      '@babel/runtime': 7.19.0
+      history: 5.3.0
+      react: 18.2.0
+    dev: false
+
   /@testing-library/dom/8.17.1:
     resolution: {integrity: sha512-KnH2MnJUzmFNPW6RIKfd+zf2Wue8mEKX0M3cpX6aKl5ZXrJM1/c/Pc8c2xDNYQCnJO48Sm5ITbMXgqTr3h4jxQ==}
     engines: {node: '>=12'}
@@ -2800,7 +2826,7 @@ packages:
     resolution: {integrity: sha512-9K4zoImiZc3HlIp6AVUDE4CWYx22a+lhSZMYNpbjW04+YF0KWj4pJXnEMjdnFTiQibFFmElcsasJXDbdI/EPhA==}
     dependencies:
       '@types/eslint': 8.4.6
-      '@types/estree': 0.0.51
+      '@types/estree': 1.0.0
     dev: false
 
   /@types/eslint/8.4.6:
@@ -3887,7 +3913,7 @@ packages:
     dev: false
 
   /bytes/3.0.0:
-    resolution: {integrity: sha1-0ygVQE1olpn4Wk6k+odV3ROpYEg=}
+    resolution: {integrity: sha512-pMhOfFDPiv9t5jjIXkHosWmkSyQbvsgEVNkz0ERHbuLh2T/7j4Mqqpz523Fe8MVY89KC6Sh/QfS2sM+SjgFDcw==}
     engines: {node: '>= 0.8'}
     dev: false
 
@@ -5922,6 +5948,12 @@ packages:
     hasBin: true
     dev: false
 
+  /history/5.3.0:
+    resolution: {integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==}
+    dependencies:
+      '@babel/runtime': 7.19.0
+    dev: false
+
   /hoist-non-react-statics/3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
@@ -7362,7 +7394,7 @@ packages:
     dev: false
 
   /ms/2.0.0:
-    resolution: {integrity: sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=}
+    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
     dev: false
 
   /ms/2.1.2:
@@ -10098,7 +10130,7 @@ packages:
     dev: false
 
   /unpipe/1.0.0:
-    resolution: {integrity: sha1-sr9O6FFKrmFltIF4KdIbLvSZBOw=}
+    resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
     dev: false
 

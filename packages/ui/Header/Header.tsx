@@ -1,4 +1,5 @@
 import { createStyles, Container, Tabs } from '@mantine/core';
+import { StarWars } from '../Icons';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -10,7 +11,7 @@ const useStyles = createStyles((theme) => ({
     borderBottom: `1px solid ${
       theme.colorScheme === 'dark' ? 'transparent' : theme.colors.gray[2]
     }`,
-    marginBottom: 120,
+    marginBottom: 20,
   },
 
   tabs: {
@@ -61,6 +62,9 @@ export function HeaderTabs({ tabs }: HeaderTabsProps) {
 
   return (
     <div className={classes.header}>
+      <Container>
+        <StarWars />
+      </Container>
       <Container>
         <Tabs
           defaultValue="Home"
