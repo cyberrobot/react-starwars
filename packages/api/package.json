@@ -15,5 +15,8 @@
     "tsconfig": "workspace:*",
     "typescript": "^4.5.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@tanstack/react-query": "^4.3.9",
+    "axios": "^0.27.2"
+  }
 }

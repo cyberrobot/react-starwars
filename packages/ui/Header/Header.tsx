@@ -1,6 +1,7 @@
-import { createStyles, Container, Tabs, Header } from '@mantine/core';
+import { createStyles, Tabs, Header } from '@mantine/core';
 import { useNavigate } from '@tanstack/react-location';
-import { StarWars } from '../Icons';
+import { useQuery } from '@tanstack/react-query';
+import { getResources } from 'api';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -53,7 +54,12 @@ interface HeaderTabsProps {}
 export function HeaderTabs({}: HeaderTabsProps) {
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const tabs = ['Home', 'People', 'Planets', 'Starships'];
+  const { data } = useQuery(['resources'], async () => await getResources());
+  const resources = Object.keys(data).map(
+    (item) => item.charAt(0).toUpperCase() + item.slice(1)
+  );
+  const tabs = ['Home', ...resources];
+  console.log('Resources', data);
 
   const items = tabs.map((tab) => (
     <Tabs.Tab
