@@ -48,13 +48,12 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface HeaderTabsProps {
-  tabs: string[];
-}
+interface HeaderTabsProps {}
 
-export function HeaderTabs({ tabs }: HeaderTabsProps) {
+export function HeaderTabs({}: HeaderTabsProps) {
   const { classes } = useStyles();
   const navigate = useNavigate();
+  const tabs = ['Home', 'People', 'Planets', 'Starships'];
 
   const items = tabs.map((tab) => (
     <Tabs.Tab

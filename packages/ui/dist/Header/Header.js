@@ -35,9 +35,10 @@ const useStyles = createStyles((theme) => ({
         },
     },
 }));
-export function HeaderTabs({ tabs }) {
+export function HeaderTabs({}) {
     const { classes } = useStyles();
     const navigate = useNavigate();
+    const tabs = ['Home', 'People', 'Planets', 'Starships'];
     const items = tabs.map((tab) => (_jsx(Tabs.Tab, Object.assign({ value: tab, onClick: () => navigate({ to: tab.toLowerCase() === 'home' ? '/' : tab.toLowerCase() }) }, { children: tab }), tab)));
     return (_jsx(Header, Object.assign({ height: 50, className: classes.header }, { children: _jsx(Tabs, Object.assign({ defaultValue: "Home", variant: "outline", classNames: {
                 root: classes.tabs,
