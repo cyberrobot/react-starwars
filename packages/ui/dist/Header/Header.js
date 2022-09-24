@@ -9,9 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { jsx as _jsx } from "react/jsx-runtime";
 import { createStyles, Tabs, Header } from '@mantine/core';
-import { useNavigate } from '@tanstack/react-location';
 import { useQuery } from '@tanstack/react-query';
 import { getResources } from 'api';
+import { useResourceStore } from 'store';
 const useStyles = createStyles((theme) => ({
     header: {
         paddingTop: theme.spacing.sm,
@@ -48,17 +48,17 @@ const useStyles = createStyles((theme) => ({
 }));
 export function HeaderTabs({}) {
     const { classes } = useStyles();
-    const navigate = useNavigate();
     const { data } = useQuery(['resources'], () => __awaiter(this, void 0, void 0, function* () { return yield getResources(); }));
+    const setCurrentResource = useResourceStore((state) => state.setCurrentResource);
     let resources = [];
     if (data) {
         resources = Object.keys(data).map((item) => item.charAt(0).toUpperCase() + item.slice(1));
     }
-    const tabs = ['Home', ...resources];
-    const items = tabs.map((tab) => (_jsx(Tabs.Tab, Object.assign({ value: tab, onClick: () => navigate({
-            to: tab.toLowerCase() === 'home' ? '/' : `/${tab.toLowerCase()}`,
-        }) }, { children: tab }), tab)));
-    return (_jsx(Header, Object.assign({ height: 50, className: classes.header }, { children: _jsx(Tabs, Object.assign({ defaultValue: "Home", variant: "outline", classNames: {
+    const tabs = [...resources];
+    const items = tabs.map((tab) => (_jsx(Tabs.Tab, Object.assign({ value: tab, onClick: () => {
+            setCurrentResource(tab.toLowerCase());
+        } }, { children: tab }), tab)));
+    return (_jsx(Header, Object.assign({ height: 50, className: classes.header }, { children: _jsx(Tabs, Object.assign({ defaultValue: "People", variant: "outline", classNames: {
                 root: classes.tabs,
                 tabsList: classes.tabsList,
                 tab: classes.tab,

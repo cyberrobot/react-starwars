@@ -1,9 +1,9 @@
 import { Route } from '@tanstack/react-location';
-import { People } from '../pages/people';
+import { Resources } from '../pages/resources';
 
 export const routes: Route[] = [
   {
-    path: 'people',
-    element: <People />,
+    path: '/',
+    element: <Resources />,
   },
 ];

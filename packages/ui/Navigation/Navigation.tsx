@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { createStyles, Navbar } from '@mantine/core';
+import { createStyles, Loader, Navbar } from '@mantine/core';
+import { useResourceStore } from 'store';
+import { useQuery } from '@tanstack/react-query';
+import { getResource } from 'api';
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef('icon');
@@ -50,39 +53,35 @@ const useStyles = createStyles((theme, _params, getRef) => {
   };
 });
 
-const data = [
-  { link: '', label: 'Notifications' },
-  { link: '', label: 'Billing' },
-  { link: '', label: 'Security' },
-  { link: '', label: 'SSH Keys' },
-  { link: '', label: 'Databases' },
-  { link: '', label: 'Authentication' },
-  { link: '', label: 'Other Settings' },
-];
-
 export function Navigation() {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState('Billing');
+  const [active, setActive] = useState('');
+  const currentResource = useResourceStore((state) => state.currentResource);
+  const { isLoading, data } = useQuery(
+    ['resource', currentResource],
+    async () => await getResource({ resource: currentResource })
+  );
 
-  const links = data.map((item) => (
+  const links = data?.results.map((item) => (
     <a
       className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
+        [classes.linkActive]: item.name === active,
       })}
-      href={item.link}
-      key={item.label}
+      href="#"
+      key={item.name}
       onClick={(event) => {
         event.preventDefault();
-        setActive(item.label);
+        setActive(item.name);
       }}
     >
-      <span>{item.label}</span>
+      <span>{item.name}</span>
     </a>
   ));
 
   return (
     <Navbar width={{ sm: 300 }} p="md">
-      <Navbar.Section grow>{links}</Navbar.Section>
+      {isLoading && <Loader />}
+      {!isLoading && <Navbar.Section grow>{links}</Navbar.Section>}
     </Navbar>
   );
 }

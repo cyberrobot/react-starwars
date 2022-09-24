@@ -1,8 +1,8 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { People } from '../pages/people';
+import { Resources } from '../pages/resources';
 export const routes = [
     {
-        path: 'people',
-        element: _jsx(People, {}),
+        path: '/',
+        element: _jsx(Resources, {}),
     },
 ];

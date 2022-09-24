@@ -1,7 +1,7 @@
 import { createStyles, Tabs, Header } from '@mantine/core';
-import { useNavigate } from '@tanstack/react-location';
 import { useQuery } from '@tanstack/react-query';
 import { getResources } from 'api';
+import { useResourceStore } from 'store';
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -53,8 +53,10 @@ interface HeaderTabsProps {}
 
 export function HeaderTabs({}: HeaderTabsProps) {
   const { classes } = useStyles();
-  const navigate = useNavigate();
   const { data } = useQuery(['resources'], async () => await getResources());
+  const setCurrentResource = useResourceStore(
+    (state) => state.setCurrentResource
+  );
 
   let resources: string[] = [];
   if (data) {
@@ -62,17 +64,15 @@ export function HeaderTabs({}: HeaderTabsProps) {
       (item) => item.charAt(0).toUpperCase() + item.slice(1)
     );
   }
-  const tabs = ['Home', ...resources];
+  const tabs = [...resources];
 
   const items = tabs.map((tab) => (
     <Tabs.Tab
       value={tab}
       key={tab}
-      onClick={() =>
-        navigate({
-          to: tab.toLowerCase() === 'home' ? '/' : `/${tab.toLowerCase()}`,
-        })
-      }
+      onClick={() => {
+        setCurrentResource(tab.toLowerCase());
+      }}
     >
       {tab}
     </Tabs.Tab>
@@ -81,7 +81,7 @@ export function HeaderTabs({}: HeaderTabsProps) {
   return (
     <Header height={50} className={classes.header}>
       <Tabs
-        defaultValue="Home"
+        defaultValue="People"
         variant="outline"
         classNames={{
           root: classes.tabs,

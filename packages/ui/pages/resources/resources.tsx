@@ -2,9 +2,9 @@ import { AppShell as MantineAppShell } from '@mantine/core';
 import { HeaderTabs } from '../../Header';
 import { Navigation } from '../../Navigation';
 
-type PeopleProps = {};
+type ResourcesProps = {};
 
-export function People({}: PeopleProps) {
+export function Resources({}: ResourcesProps) {
   return (
     <MantineAppShell
       padding={0}

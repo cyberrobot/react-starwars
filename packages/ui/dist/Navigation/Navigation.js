@@ -1,6 +1,18 @@
-import { jsx as _jsx } from "react/jsx-runtime";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState } from 'react';
-import { createStyles, Navbar } from '@mantine/core';
+import { createStyles, Loader, Navbar } from '@mantine/core';
+import { useResourceStore } from 'store';
+import { useQuery } from '@tanstack/react-query';
+import { getResource } from 'api';
 const useStyles = createStyles((theme, _params, getRef) => {
     const icon = getRef('icon');
     return {
@@ -33,23 +45,16 @@ const useStyles = createStyles((theme, _params, getRef) => {
         },
     };
 });
-const data = [
-    { link: '', label: 'Notifications' },
-    { link: '', label: 'Billing' },
-    { link: '', label: 'Security' },
-    { link: '', label: 'SSH Keys' },
-    { link: '', label: 'Databases' },
-    { link: '', label: 'Authentication' },
-    { link: '', label: 'Other Settings' },
-];
 export function Navigation() {
     const { classes, cx } = useStyles();
-    const [active, setActive] = useState('Billing');
-    const links = data.map((item) => (_jsx("a", Object.assign({ className: cx(classes.link, {
-            [classes.linkActive]: item.label === active,
-        }), href: item.link, onClick: (event) => {
+    const [active, setActive] = useState('');
+    const currentResource = useResourceStore((state) => state.currentResource);
+    const { isLoading, data } = useQuery(['resource', currentResource], () => __awaiter(this, void 0, void 0, function* () { return yield getResource({ resource: currentResource }); }));
+    const links = data === null || data === void 0 ? void 0 : data.results.map((item) => (_jsx("a", Object.assign({ className: cx(classes.link, {
+            [classes.linkActive]: item.name === active,
+        }), href: "#", onClick: (event) => {
             event.preventDefault();
-            setActive(item.label);
-        } }, { children: _jsx("span", { children: item.label }) }), item.label)));
-    return (_jsx(Navbar, Object.assign({ width: { sm: 300 }, p: "md" }, { children: _jsx(Navbar.Section, Object.assign({ grow: true }, { children: links })) })));
+            setActive(item.name);
+        } }, { children: _jsx("span", { children: item.name }) }), item.name)));
+    return (_jsxs(Navbar, Object.assign({ width: { sm: 300 }, p: "md" }, { children: [isLoading && _jsx(Loader, {}), !isLoading && _jsx(Navbar.Section, Object.assign({ grow: true }, { children: links }))] })));
 }
