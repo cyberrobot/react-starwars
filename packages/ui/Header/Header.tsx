@@ -54,10 +54,7 @@ interface HeaderTabsProps {}
 export function HeaderTabs({}: HeaderTabsProps) {
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const { isLoading, data } = useQuery(
-    ['resources'],
-    async () => await getResources()
-  );
+  const { data } = useQuery(['resources'], async () => await getResources());
 
   let resources: string[] = [];
   if (data) {
@@ -72,7 +69,9 @@ export function HeaderTabs({}: HeaderTabsProps) {
       value={tab}
       key={tab}
       onClick={() =>
-        navigate({ to: tab.toLowerCase() === 'home' ? '/' : tab.toLowerCase() })
+        navigate({
+          to: tab.toLowerCase() === 'home' ? '/' : `/${tab.toLowerCase()}`,
+        })
       }
     >
       {tab}
