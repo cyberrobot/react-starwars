@@ -49,10 +49,12 @@ const useStyles = createStyles((theme) => ({
 export function HeaderTabs({}) {
     const { classes } = useStyles();
     const navigate = useNavigate();
-    const { isLoading, isError, data, error } = useQuery(['resources'], () => __awaiter(this, void 0, void 0, function* () { return yield getResources(); }));
-    const resources = Object.keys(data).map((item) => item.charAt(0).toUpperCase() + item.slice(1));
+    const { isLoading, data } = useQuery(['resources'], () => __awaiter(this, void 0, void 0, function* () { return yield getResources(); }));
+    let resources = [];
+    if (data) {
+        resources = Object.keys(data).map((item) => item.charAt(0).toUpperCase() + item.slice(1));
+    }
     const tabs = ['Home', ...resources];
-    console.log('Resources', data);
     const items = tabs.map((tab) => (_jsx(Tabs.Tab, Object.assign({ value: tab, onClick: () => navigate({ to: tab.toLowerCase() === 'home' ? '/' : tab.toLowerCase() }) }, { children: tab }), tab)));
     return (_jsx(Header, Object.assign({ height: 50, className: classes.header }, { children: _jsx(Tabs, Object.assign({ defaultValue: "Home", variant: "outline", classNames: {
                 root: classes.tabs,

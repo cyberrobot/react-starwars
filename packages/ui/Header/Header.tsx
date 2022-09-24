@@ -54,12 +54,18 @@ interface HeaderTabsProps {}
 export function HeaderTabs({}: HeaderTabsProps) {
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const { data } = useQuery(['resources'], async () => await getResources());
-  const resources = Object.keys(data).map(
-    (item) => item.charAt(0).toUpperCase() + item.slice(1)
+  const { isLoading, data } = useQuery(
+    ['resources'],
+    async () => await getResources()
   );
+
+  let resources: string[] = [];
+  if (data) {
+    resources = Object.keys(data).map(
+      (item) => item.charAt(0).toUpperCase() + item.slice(1)
+    );
+  }
   const tabs = ['Home', ...resources];
-  console.log('Resources', data);
 
   const items = tabs.map((tab) => (
     <Tabs.Tab
