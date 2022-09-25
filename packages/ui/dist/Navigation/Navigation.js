@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useState } from 'react';
 import { createStyles, Loader, Navbar } from '@mantine/core';
 import { useResourceStore } from 'store';
 import { useQuery } from '@tanstack/react-query';
@@ -47,16 +46,16 @@ const useStyles = createStyles((theme, _params, getRef) => {
 });
 export function Navigation() {
     const { classes, cx } = useStyles();
-    const [active, setActive] = useState('');
+    const { currentDataBy, setCurrentDataBy } = useResourceStore((state) => state);
     const currentResource = useResourceStore((state) => state.currentResource);
     const { isLoading, data } = useQuery(['resource', currentResource], () => __awaiter(this, void 0, void 0, function* () { return yield getResource({ resource: currentResource }); }));
     const links = data === null || data === void 0 ? void 0 : data.results.map((item) => {
         const name = 'name' in item ? item.name : item.title;
         return (_jsx("a", Object.assign({ className: cx(classes.link, {
-                [classes.linkActive]: name === active,
+                [classes.linkActive]: name === currentDataBy,
             }), href: "#", onClick: (event) => {
                 event.preventDefault();
-                setActive(name);
+                setCurrentDataBy(name);
             } }, { children: _jsx("span", { children: name }) }), name));
     });
     return (_jsxs(Navbar, Object.assign({ width: { sm: 300 }, p: "md" }, { children: [isLoading && _jsx(Loader, {}), !isLoading && _jsx(Navbar.Section, Object.assign({ grow: true }, { children: links }))] })));

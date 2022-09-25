@@ -1,6 +1,8 @@
 declare type ResourceStore = {
     currentResource: string;
-    setCurrentResource: (resource: string) => void;
+    currentDataBy: string;
+    setCurrentResource: (item: string) => void;
+    setCurrentDataBy: (item: string) => void;
 };
 export declare const useResourceStore: import("zustand").UseBoundStore<import("zustand").StoreApi<ResourceStore>>;
 export {};

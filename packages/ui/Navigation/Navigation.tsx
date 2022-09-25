@@ -55,7 +55,9 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
 export function Navigation() {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState('');
+  const { currentDataBy, setCurrentDataBy } = useResourceStore(
+    (state) => state
+  );
   const currentResource = useResourceStore((state) => state.currentResource);
   const { isLoading, data } = useQuery(
     ['resource', currentResource],
@@ -67,13 +69,13 @@ export function Navigation() {
     return (
       <a
         className={cx(classes.link, {
-          [classes.linkActive]: name === active,
+          [classes.linkActive]: name === currentDataBy,
         })}
         href="#"
         key={name}
         onClick={(event) => {
           event.preventDefault();
-          setActive(name);
+          setCurrentDataBy(name);
         }}
       >
         <span>{name}</span>

@@ -2,11 +2,14 @@ import create from 'zustand';
 
 type ResourceStore = {
   currentResource: string;
-  setCurrentResource: (resource: string) => void;
+  currentDataBy: string;
+  setCurrentResource: (item: string) => void;
+  setCurrentDataBy: (item: string) => void;
 };
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   currentResource: 'people',
-  setCurrentResource: (resource) =>
-    set((state) => ({ currentResource: resource })),
+  currentDataBy: '',
+  setCurrentResource: (item) => set((state) => ({ currentResource: item })),
+  setCurrentDataBy: (item) => set((state) => ({ currentDataBy: item })),
 }));
