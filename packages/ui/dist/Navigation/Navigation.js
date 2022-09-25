@@ -50,11 +50,14 @@ export function Navigation() {
     const [active, setActive] = useState('');
     const currentResource = useResourceStore((state) => state.currentResource);
     const { isLoading, data } = useQuery(['resource', currentResource], () => __awaiter(this, void 0, void 0, function* () { return yield getResource({ resource: currentResource }); }));
-    const links = data === null || data === void 0 ? void 0 : data.results.map((item) => (_jsx("a", Object.assign({ className: cx(classes.link, {
-            [classes.linkActive]: item.name === active,
-        }), href: "#", onClick: (event) => {
-            event.preventDefault();
-            setActive(item.name);
-        } }, { children: _jsx("span", { children: item.name }) }), item.name)));
+    const links = data === null || data === void 0 ? void 0 : data.results.map((item) => {
+        const name = 'name' in item ? item.name : item.title;
+        return (_jsx("a", Object.assign({ className: cx(classes.link, {
+                [classes.linkActive]: name === active,
+            }), href: "#", onClick: (event) => {
+                event.preventDefault();
+                setActive(name);
+            } }, { children: _jsx("span", { children: name }) }), name));
+    });
     return (_jsxs(Navbar, Object.assign({ width: { sm: 300 }, p: "md" }, { children: [isLoading && _jsx(Loader, {}), !isLoading && _jsx(Navbar.Section, Object.assign({ grow: true }, { children: links }))] })));
 }

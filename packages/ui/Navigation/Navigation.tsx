@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { createStyles, Loader, Navbar } from '@mantine/core';
 import { useResourceStore } from 'store';
 import { useQuery } from '@tanstack/react-query';
-import { getResource } from 'api';
+import { getResource, Entity } from 'api';
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef('icon');
@@ -62,21 +62,24 @@ export function Navigation() {
     async () => await getResource({ resource: currentResource })
   );
 
-  const links = data?.results.map((item) => (
-    <a
-      className={cx(classes.link, {
-        [classes.linkActive]: item.name === active,
-      })}
-      href="#"
-      key={item.name}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.name);
-      }}
-    >
-      <span>{item.name}</span>
-    </a>
-  ));
+  const links = data?.results.map((item: Entity) => {
+    const name = 'name' in item ? item.name : item.title;
+    return (
+      <a
+        className={cx(classes.link, {
+          [classes.linkActive]: name === active,
+        })}
+        href="#"
+        key={name}
+        onClick={(event) => {
+          event.preventDefault();
+          setActive(name);
+        }}
+      >
+        <span>{name}</span>
+      </a>
+    );
+  });
 
   return (
     <Navbar width={{ sm: 300 }} p="md">

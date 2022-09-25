@@ -1,2 +1,2 @@
 export { fakeAPIFetch } from './fake-backend';
-export { getResources, getResource } from './data';
+export { getResources, getResource, type Entity } from './data';

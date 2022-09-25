@@ -16,14 +16,102 @@ declare type People = {
     edited: string;
     url: string;
 };
-declare type Resource = {
+declare type Planet = {
+    name: string;
+    rotation_period: string;
+    orbital_period: string;
+    diameter: string;
+    climate: string;
+    gravity: string;
+    terrain: string;
+    surface_water: string;
+    population: string;
+    residents: string[];
+    films: string[];
+    created: string;
+    edited: string;
+    url: string;
+};
+declare type Film = {
+    title: string;
+    episode_id: string;
+    opening_crawl: string;
+    director: string;
+    producer: string;
+    release_date: string;
+    characters: string[];
+    planets: string[];
+    starships: string[];
+    vehicles: string[];
+    species: string[];
+    created: string;
+    edited: string;
+    url: string;
+};
+declare type Specie = {
+    name: string;
+    classification: string;
+    designation: string;
+    average_height: string;
+    skin_colors: string;
+    hair_colors: string;
+    eye_colors: string;
+    average_lifespan: string;
+    homeworld: string;
+    language: string;
+    people: string[];
+    films: string[];
+    created: string;
+    edited: string;
+    url: string;
+};
+declare type Vehicle = {
+    name: string;
+    model: string;
+    manufacturer: string;
+    cost_in_credits: string;
+    length: string;
+    max_atmosphering_speed: string;
+    crew: string;
+    passengers: string;
+    cargo_capacity: string;
+    consumables: string;
+    vehicle_class: string;
+    pilots: string[];
+    films: string[];
+    created: string;
+    edited: string;
+    url: string;
+};
+declare type Starship = {
+    name: string;
+    model: string;
+    manufacturer: string;
+    cost_in_credits: string;
+    length: string;
+    max_atmosphering_speed: string;
+    crew: string;
+    passengers: string;
+    cargo_capacity: string;
+    consumables: string;
+    hyperdrive_rating: string;
+    MGLT: string;
+    starship_class: string;
+    pilots: string[];
+    films: string[];
+    created: string;
+    edited: string;
+    url: string;
+};
+export declare type Entity = People | Planet | Film | Specie | Vehicle | Starship;
+declare type Resource<T> = {
     count: number;
     next: string;
     previous: string;
-    results: People[];
+    results: T[];
 };
-export declare function getResource({ resource, }: {
+export declare function getResource({ resource }: {
     resource: string;
-}): Promise<Resource>;
+}): Promise<Resource<People> | Resource<Planet> | Resource<Film> | Resource<Specie> | Resource<Vehicle> | Resource<Starship> | undefined>;
 export {};
 //# sourceMappingURL=get-resource.d.ts.map
