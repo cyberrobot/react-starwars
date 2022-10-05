@@ -9,57 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import axios from 'axios';
 import { apiUrl } from '../../constants';
-function getPeople() {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield resource({ resource: 'people' });
-    });
-}
-function getPlanet() {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield resource({ resource: 'planets' });
-    });
-}
-function getFilm() {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield resource({ resource: 'films' });
-    });
-}
-function getSpecie() {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield resource({ resource: 'species' });
-    });
-}
-function getVehicle() {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield resource({ resource: 'vehicles' });
-    });
-}
-function getStarship() {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield resource({ resource: 'starships' });
-    });
-}
-function resource({ resource }) {
+export function getResource({ resource, }) {
     return __awaiter(this, void 0, void 0, function* () {
         const url = apiUrl + resource;
         return (yield axios.get(url)).data;
     });
 }
-export function getResource({ resource }) {
+export function getResourceDetails({ resource, id, }) {
     return __awaiter(this, void 0, void 0, function* () {
-        switch (resource) {
-            case 'people':
-                return yield getPeople();
-            case 'planets':
-                return yield getPlanet();
-            case 'films':
-                return yield getFilm();
-            case 'species':
-                return yield getSpecie();
-            case 'vehicles':
-                return yield getVehicle();
-            case 'starships':
-                return yield getStarship();
-        }
+        const url = apiUrl + resource + '/' + id;
+        return (yield axios.get(url)).data;
     });
 }

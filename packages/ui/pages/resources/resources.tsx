@@ -1,4 +1,5 @@
 import { AppShell as MantineAppShell } from '@mantine/core';
+import { EntityDetails } from '../../EntityDetails/EntityDetails';
 import { HeaderTabs } from '../../Header';
 import { Navigation } from '../../Navigation';
 
@@ -11,7 +12,7 @@ export function Resources({}: ResourcesProps) {
       header={<HeaderTabs />}
       navbar={<Navigation />}
     >
-      Hello
+      <EntityDetails />
     </MantineAppShell>
   );
 }

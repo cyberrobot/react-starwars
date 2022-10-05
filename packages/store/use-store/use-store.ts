@@ -1,15 +1,17 @@
+import { Entity } from 'api';
 import create from 'zustand';
 
 type ResourceStore = {
   currentResource: string;
-  currentDataBy: string;
+  currentResourceDetails: Entity | null;
   setCurrentResource: (item: string) => void;
-  setCurrentDataBy: (item: string) => void;
+  setCurrentResourceDetails: (item: Entity | null) => void;
 };
 
 export const useResourceStore = create<ResourceStore>((set) => ({
   currentResource: 'people',
-  currentDataBy: '',
+  currentResourceDetails: null,
   setCurrentResource: (item) => set((state) => ({ currentResource: item })),
-  setCurrentDataBy: (item) => set((state) => ({ currentDataBy: item })),
+  setCurrentResourceDetails: (item) =>
+    set((state) => ({ currentResourceDetails: item })),
 }));

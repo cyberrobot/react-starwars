@@ -1,7 +1,7 @@
 import create from 'zustand';
 export const useResourceStore = create((set) => ({
     currentResource: 'people',
-    currentDataBy: '',
+    currentResourceDetails: null,
     setCurrentResource: (item) => set((state) => ({ currentResource: item })),
-    setCurrentDataBy: (item) => set((state) => ({ currentDataBy: item })),
+    setCurrentResourceDetails: (item) => set((state) => ({ currentResourceDetails: item })),
 }));

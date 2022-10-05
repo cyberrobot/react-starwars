@@ -16,6 +16,7 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "zustand": "^4.1.1"
+    "zustand": "^4.1.1",
+    "api": "workspace:*"
   }
 }

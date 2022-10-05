@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createStyles, Loader, Navbar } from '@mantine/core';
 import { useResourceStore } from 'store';
 import { useQuery } from '@tanstack/react-query';
@@ -55,27 +55,32 @@ const useStyles = createStyles((theme, _params, getRef) => {
 
 export function Navigation() {
   const { classes, cx } = useStyles();
-  const { currentDataBy, setCurrentDataBy } = useResourceStore(
-    (state) => state
-  );
   const currentResource = useResourceStore((state) => state.currentResource);
   const { isLoading, data } = useQuery(
     ['resource', currentResource],
     async () => await getResource({ resource: currentResource })
   );
+  const { currentResourceDetails, setCurrentResourceDetails } =
+    useResourceStore((state) => state);
 
-  const links = data?.results.map((item: Entity) => {
+  useEffect(() => {
+    setCurrentResourceDetails(null);
+  }, [setCurrentResourceDetails, currentResource]);
+
+  const links = data?.results.map((item: Entity, index: number) => {
     const name = 'name' in item ? item.name : item.title;
     return (
       <a
         className={cx(classes.link, {
-          [classes.linkActive]: name === currentDataBy,
+          [classes.linkActive]:
+            name === currentResourceDetails?.name ||
+            currentResourceDetails?.title,
         })}
         href="#"
         key={name}
         onClick={(event) => {
           event.preventDefault();
-          setCurrentDataBy(name);
+          setCurrentResourceDetails(item);
         }}
       >
         <span>{name}</span>
