@@ -1,5 +1,5 @@
-import { Container, SimpleGrid, Stack } from '@mantine/core';
 import { useResourceStore } from 'store';
+import { Film } from './internal/Film';
 import { People } from './internal/People';
 import { Planet } from './internal/Planet';
 
@@ -17,6 +17,9 @@ export function EntityDetails({}: EntityDetailsProps) {
       )}
       {currentResource === 'planets' && currentResourceDetails && (
         <Planet data={currentResourceDetails} />
+      )}
+      {currentResource === 'films' && currentResourceDetails && (
+        <Film data={currentResourceDetails} />
       )}
     </>
   );

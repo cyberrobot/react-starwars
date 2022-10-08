@@ -74,9 +74,9 @@ export function Navigation() {
         className={cx(classes.link, {
           [classes.linkActive]:
             name === currentResourceDetails?.name ||
-            currentResourceDetails?.title,
+            name === currentResourceDetails?.title,
         })}
-        href="#"
+        href=""
         key={name}
         onClick={(event) => {
           event.preventDefault();

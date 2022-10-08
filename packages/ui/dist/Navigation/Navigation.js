@@ -57,8 +57,8 @@ export function Navigation() {
         const name = 'name' in item ? item.name : item.title;
         return (_jsx("a", Object.assign({ className: cx(classes.link, {
                 [classes.linkActive]: name === (currentResourceDetails === null || currentResourceDetails === void 0 ? void 0 : currentResourceDetails.name) ||
-                    (currentResourceDetails === null || currentResourceDetails === void 0 ? void 0 : currentResourceDetails.title),
-            }), href: "#", onClick: (event) => {
+                    name === (currentResourceDetails === null || currentResourceDetails === void 0 ? void 0 : currentResourceDetails.title),
+            }), href: "", onClick: (event) => {
                 event.preventDefault();
                 setCurrentResourceDetails(item);
             } }, { children: _jsx("span", { children: name }) }), name));
