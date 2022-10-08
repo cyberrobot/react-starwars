@@ -2,6 +2,7 @@ import { useResourceStore } from 'store';
 import { Film } from './internal/Film';
 import { People } from './internal/People';
 import { Planet } from './internal/Planet';
+import { Specie } from './internal/Specie';
 
 type EntityDetailsProps = {};
 
@@ -20,6 +21,9 @@ export function EntityDetails({}: EntityDetailsProps) {
       )}
       {currentResource === 'films' && currentResourceDetails && (
         <Film data={currentResourceDetails} />
+      )}
+      {currentResource === 'species' && currentResourceDetails && (
+        <Specie data={currentResourceDetails} />
       )}
     </>
   );
