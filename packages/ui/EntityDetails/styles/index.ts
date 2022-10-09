@@ -18,4 +18,7 @@ export const useStyles = createStyles((theme) => ({
       textTransform: 'capitalize',
     },
   },
+  number: {
+    textTransform: 'lowercase',
+  },
 }));
