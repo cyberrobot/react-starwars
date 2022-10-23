@@ -1,7 +1,10 @@
 import { createStyles } from '@mantine/core';
 
 export const useStyles = createStyles((theme) => ({
-  container: {
+  page: {
+    marginLeft: '300px',
+  },
+  content: {
     paddingTop: theme.spacing.xl,
     paddingRight: theme.spacing.md,
     paddingBottom: theme.spacing.lg,

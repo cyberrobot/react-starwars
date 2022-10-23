@@ -10,7 +10,10 @@ type Props = {
 export function Film({ data }: Props) {
   const { classes } = useStyles();
   return (
-    <SimpleGrid cols={2} className={classes.container}>
+    <SimpleGrid
+      cols={2}
+      className={classes.content}
+    >
       <Stack className={classes.descriptionTermList}>
         <div>Title</div>
         <div>Director</div>

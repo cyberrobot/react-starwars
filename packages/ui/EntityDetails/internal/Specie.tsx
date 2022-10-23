@@ -10,7 +10,10 @@ type Props = {
 export function Specie({ data }: Props) {
   const { classes } = useStyles();
   return (
-    <SimpleGrid cols={2} className={classes.container}>
+    <SimpleGrid
+      cols={2}
+      className={classes.content}
+    >
       <Stack className={classes.descriptionTermList}>
         <div>Name</div>
         <div>Average height</div>

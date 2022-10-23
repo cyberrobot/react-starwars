@@ -5,16 +5,18 @@ import { Planet } from './internal/Planet';
 import { Specie } from './internal/Specie';
 import { Starship } from './internal/Starship';
 import { Vehicle } from './internal/Vehicle';
+import { useStyles } from './styles';
 
 type EntityDetailsProps = {};
 
 export function EntityDetails({}: EntityDetailsProps) {
+  const { classes } = useStyles();
   const { currentResource, currentResourceDetails } = useResourceStore(
-    (state) => state
+    (state) => state,
   );
 
   return (
-    <>
+    <div className={classes.page}>
       {currentResource === 'people' && currentResourceDetails && (
         <People data={currentResourceDetails} />
       )}
@@ -33,6 +35,6 @@ export function EntityDetails({}: EntityDetailsProps) {
       {currentResource === 'starships' && currentResourceDetails && (
         <Starship data={currentResourceDetails} />
       )}
-    </>
+    </div>
   );
 }

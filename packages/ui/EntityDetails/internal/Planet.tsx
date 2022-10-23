@@ -10,7 +10,10 @@ type Props = {
 export function Planet({ data }: Props) {
   const { classes } = useStyles();
   return (
-    <SimpleGrid cols={2} className={classes.container}>
+    <SimpleGrid
+      cols={2}
+      className={classes.content}
+    >
       <Stack className={classes.descriptionTermList}>
         <div>Climate</div>
         <div>Diameter</div>

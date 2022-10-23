@@ -51,14 +51,13 @@ export const useStyles = createStyles((theme, _params, getRef) => {
     },
     listContainer: {
       position: 'absolute',
-      top: 0,
+      top: theme.spacing.md,
       left: 0,
       bottom: '72px',
       right: 0,
       overflowY: 'auto',
       paddingLeft: theme.spacing.md,
       paddingRight: theme.spacing.md,
-      paddingTop: theme.spacing.md,
     },
     navbarFooter: {
       position: 'absolute',
