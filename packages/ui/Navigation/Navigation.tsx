@@ -21,6 +21,8 @@ export function Navigation() {
 
   useEffect(() => {
     setCurrentResourceDetails(null);
+    setCompoundData([]);
+    setPageIndex(1);
   }, [setCurrentResourceDetails, currentResource]);
 
   useEffect(() => {

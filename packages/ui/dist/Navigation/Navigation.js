@@ -24,6 +24,8 @@ export function Navigation() {
     const { currentResourceDetails, setCurrentResourceDetails } = useResourceStore((state) => state);
     useEffect(() => {
         setCurrentResourceDetails(null);
+        setCompoundData([]);
+        setPageIndex(1);
     }, [setCurrentResourceDetails, currentResource]);
     useEffect(() => {
         if (data) {
