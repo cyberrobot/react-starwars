@@ -1,7 +1,7 @@
 import { AppShell as MantineAppShell } from '@mantine/core';
-import { EntityDetails } from '../../EntityDetails/EntityDetails';
-import { HeaderTabs } from '../../Header';
-import { Navigation } from '../../Navigation';
+import { EntityDetails } from '../../components/EntityDetails/EntityDetails';
+import { HeaderTabs } from '../../components/Header';
+import { Navigation } from '../../components/Navigation';
 
 type ResourcesProps = {};
 
