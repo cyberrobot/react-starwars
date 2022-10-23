@@ -8,52 +8,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useEffect } from 'react';
-import { createStyles, Loader, Navbar } from '@mantine/core';
+import { useEffect, useRef, useState } from 'react';
+import { Button, Navbar } from '@mantine/core';
 import { useResourceStore } from 'store';
 import { useQuery } from '@tanstack/react-query';
 import { getResource } from 'api';
-const useStyles = createStyles((theme, _params, getRef) => {
-    const icon = getRef('icon');
-    return {
-        link: Object.assign(Object.assign({}, theme.fn.focusStyles()), { display: 'flex', alignItems: 'center', textDecoration: 'none', fontSize: theme.fontSizes.sm, color: theme.colorScheme === 'dark'
-                ? theme.colors.dark[1]
-                : theme.colors.gray[7], padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`, borderRadius: theme.radius.sm, fontWeight: 500, '&:hover': {
-                backgroundColor: theme.colorScheme === 'dark'
-                    ? theme.colors.dark[6]
-                    : theme.colors.gray[0],
-                color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-                [`& .${icon}`]: {
-                    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-                },
-            } }),
-        linkActive: {
-            '&, &:hover': {
-                backgroundColor: theme.fn.variant({
-                    variant: 'light',
-                    color: theme.primaryColor,
-                }).background,
-                color: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
-                    .color,
-                [`& .${icon}`]: {
-                    color: theme.fn.variant({
-                        variant: 'light',
-                        color: theme.primaryColor,
-                    }).color,
-                },
-            },
-        },
-    };
-});
+import { useStyles } from './styles';
 export function Navigation() {
     const { classes, cx } = useStyles();
+    const scrollAnchorRef = useRef(null);
+    const [pageIndex, setPageIndex] = useState(1);
+    const [compoundData, setCompoundData] = useState([]);
     const currentResource = useResourceStore((state) => state.currentResource);
-    const { isLoading, data } = useQuery(['resource', currentResource], () => __awaiter(this, void 0, void 0, function* () { return yield getResource({ resource: currentResource }); }));
+    const { isLoading, isSuccess, data } = useQuery(['resource', currentResource, pageIndex], () => __awaiter(this, void 0, void 0, function* () { return yield getResource({ resource: `${currentResource}?page=${pageIndex}` }); }));
     const { currentResourceDetails, setCurrentResourceDetails } = useResourceStore((state) => state);
     useEffect(() => {
         setCurrentResourceDetails(null);
     }, [setCurrentResourceDetails, currentResource]);
-    const links = data === null || data === void 0 ? void 0 : data.results.map((item, index) => {
+    useEffect(() => {
+        if (data) {
+            setCompoundData((prev) => [...prev, ...data === null || data === void 0 ? void 0 : data.results]);
+        }
+    }, [data, setCompoundData, pageIndex, isSuccess]);
+    useEffect(() => {
+        var _a;
+        if (isSuccess) {
+            (_a = scrollAnchorRef.current) === null || _a === void 0 ? void 0 : _a.scrollIntoView({
+                behavior: 'smooth',
+                block: 'end',
+            });
+        }
+    }, [compoundData.length, isSuccess]);
+    const links = compoundData.map((item, index) => {
         const name = 'name' in item ? item.name : item.title;
         return (_jsx("a", Object.assign({ className: cx(classes.link, {
                 [classes.linkActive]: name === (currentResourceDetails === null || currentResourceDetails === void 0 ? void 0 : currentResourceDetails.name) ||
@@ -63,5 +49,8 @@ export function Navigation() {
                 setCurrentResourceDetails(item);
             } }, { children: _jsx("span", { children: name }) }), name));
     });
-    return (_jsxs(Navbar, Object.assign({ width: { sm: 300 }, p: "md" }, { children: [isLoading && _jsx(Loader, {}), !isLoading && _jsx(Navbar.Section, Object.assign({ grow: true }, { children: links }))] })));
+    const loadMoreHandler = () => {
+        setPageIndex(pageIndex + 1);
+    };
+    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [links, _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: _jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading, disabled: (data === null || data === void 0 ? void 0 : data.next) === null }, { children: "Load more" })) }))] })));
 }

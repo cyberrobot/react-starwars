@@ -1,64 +1,20 @@
-import { useEffect, useState } from 'react';
-import { createStyles, Loader, Navbar } from '@mantine/core';
+import { useEffect, useRef, useState } from 'react';
+import { Button, Loader, Navbar } from '@mantine/core';
 import { useResourceStore } from 'store';
 import { useQuery } from '@tanstack/react-query';
 import { getResource, Entity } from 'api';
-
-const useStyles = createStyles((theme, _params, getRef) => {
-  const icon = getRef('icon');
-  return {
-    link: {
-      ...theme.fn.focusStyles(),
-      display: 'flex',
-      alignItems: 'center',
-      textDecoration: 'none',
-      fontSize: theme.fontSizes.sm,
-      color:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[1]
-          : theme.colors.gray[7],
-      padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
-      borderRadius: theme.radius.sm,
-      fontWeight: 500,
-
-      '&:hover': {
-        backgroundColor:
-          theme.colorScheme === 'dark'
-            ? theme.colors.dark[6]
-            : theme.colors.gray[0],
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-
-        [`& .${icon}`]: {
-          color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-        },
-      },
-    },
-
-    linkActive: {
-      '&, &:hover': {
-        backgroundColor: theme.fn.variant({
-          variant: 'light',
-          color: theme.primaryColor,
-        }).background,
-        color: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
-          .color,
-        [`& .${icon}`]: {
-          color: theme.fn.variant({
-            variant: 'light',
-            color: theme.primaryColor,
-          }).color,
-        },
-      },
-    },
-  };
-});
+import { useStyles } from './styles';
 
 export function Navigation() {
   const { classes, cx } = useStyles();
+  const scrollAnchorRef = useRef<HTMLDivElement>(null);
+  const [pageIndex, setPageIndex] = useState<number>(1);
+  const [compoundData, setCompoundData] = useState<Entity[]>([]);
   const currentResource = useResourceStore((state) => state.currentResource);
-  const { isLoading, data } = useQuery(
-    ['resource', currentResource],
-    async () => await getResource({ resource: currentResource })
+  const { isLoading, isSuccess, data } = useQuery(
+    ['resource', currentResource, pageIndex],
+    async () =>
+      await getResource({ resource: `${currentResource}?page=${pageIndex}` }),
   );
   const { currentResourceDetails, setCurrentResourceDetails } =
     useResourceStore((state) => state);
@@ -67,7 +23,22 @@ export function Navigation() {
     setCurrentResourceDetails(null);
   }, [setCurrentResourceDetails, currentResource]);
 
-  const links = data?.results.map((item: Entity, index: number) => {
+  useEffect(() => {
+    if (data) {
+      setCompoundData((prev) => [...prev, ...data?.results]);
+    }
+  }, [data, setCompoundData, pageIndex, isSuccess]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      scrollAnchorRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+    }
+  }, [compoundData.length, isSuccess]);
+
+  const links = compoundData.map((item: Entity, index: number) => {
     const name = 'name' in item ? item.name : item.title;
     return (
       <a
@@ -88,10 +59,25 @@ export function Navigation() {
     );
   });
 
+  const loadMoreHandler = () => {
+    setPageIndex(pageIndex + 1);
+  };
+
   return (
-    <Navbar width={{ sm: 300 }} p="md">
-      {isLoading && <Loader />}
-      {!isLoading && <Navbar.Section grow>{links}</Navbar.Section>}
+    <Navbar className={classes.container}>
+      <Navbar.Section className={classes.listContainer}>
+        {links}
+        <div ref={scrollAnchorRef}></div>
+      </Navbar.Section>
+      <Navbar.Section className={classes.navbarFooter}>
+        <Button
+          onClick={loadMoreHandler}
+          loading={isLoading}
+          disabled={data?.next === null}
+        >
+          Load more
+        </Button>
+      </Navbar.Section>
     </Navbar>
   );
 }

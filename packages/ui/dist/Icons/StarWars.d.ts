@@ -1,4 +1,3 @@
-/// <reference types="react" />
 export declare const StarWars: ({ width, height, }: {
     width?: string | undefined;
     height?: string | undefined;
