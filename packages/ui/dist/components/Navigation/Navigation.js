@@ -17,7 +17,7 @@ import { useStyles } from './styles';
 import { SearchField } from '../SearchField/SearchField';
 import Links from './internal/Links';
 export function Navigation() {
-    const { classes, cx } = useStyles();
+    const { classes } = useStyles();
     const scrollAnchorRef = useRef(null);
     const [pageIndex, setPageIndex] = useState(1);
     const [compoundData, setCompoundData] = useState([]);
@@ -46,5 +46,10 @@ export function Navigation() {
     const loadMoreHandler = () => {
         setPageIndex(pageIndex + 1);
     };
-    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, {}) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [_jsx(Links, { data: compoundData, resourceDetails: currentResourceDetails, onClick: setCurrentResourceDetails }), _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: _jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading, disabled: (data === null || data === void 0 ? void 0 : data.next) === null }, { children: "Load more" })) }))] })));
+    const searchHandler = (data) => {
+        if (data) {
+            setCompoundData(data);
+        }
+    };
+    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, { placeholder: `Search ${currentResource}...`, onSearch: searchHandler }) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [_jsx(Links, { data: compoundData, resourceDetails: currentResourceDetails, onClick: setCurrentResourceDetails }), _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: _jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading, disabled: (data === null || data === void 0 ? void 0 : data.next) === null }, { children: "Load more" })) }))] })));
 }

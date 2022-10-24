@@ -8,7 +8,7 @@ import { SearchField } from '../SearchField/SearchField';
 import Links from './internal/Links';
 
 export function Navigation() {
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [compoundData, setCompoundData] = useState<Entity[]>([]);
@@ -46,10 +46,19 @@ export function Navigation() {
     setPageIndex(pageIndex + 1);
   };
 
+  const searchHandler = (data: Entity[] | undefined) => {
+    if (data) {
+      setCompoundData(data);
+    }
+  };
+
   return (
     <Navbar className={classes.container}>
       <Navbar.Section className={classes.searchContainer}>
-        <SearchField />
+        <SearchField
+          placeholder={`Search ${currentResource}...`}
+          onSearch={searchHandler}
+        />
       </Navbar.Section>
       <Navbar.Section className={classes.listContainer}>
         <Links
