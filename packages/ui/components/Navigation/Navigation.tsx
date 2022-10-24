@@ -4,6 +4,7 @@ import { useResourceStore } from 'store';
 import { useQuery } from '@tanstack/react-query';
 import { getResource, Entity } from 'api';
 import { useStyles } from './styles';
+import { SearchField } from '../SearchField/SearchField';
 
 export function Navigation() {
   const { classes, cx } = useStyles();
@@ -67,6 +68,9 @@ export function Navigation() {
 
   return (
     <Navbar className={classes.container}>
+      <Navbar.Section className={classes.searchContainer}>
+        <SearchField />
+      </Navbar.Section>
       <Navbar.Section className={classes.listContainer}>
         {links}
         <div ref={scrollAnchorRef}></div>

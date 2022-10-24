@@ -33,9 +33,14 @@ export const useStyles = createStyles((theme, _params, getRef) => {
             overflowY: 'auto',
             width: 300,
         },
+        searchContainer: {
+            paddingTop: theme.spacing.md,
+            paddingLeft: theme.spacing.md,
+            paddingRight: theme.spacing.md,
+        },
         listContainer: {
             position: 'absolute',
-            top: theme.spacing.md,
+            top: '64px',
             left: 0,
             bottom: '72px',
             right: 0,

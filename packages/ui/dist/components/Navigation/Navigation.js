@@ -14,6 +14,7 @@ import { useResourceStore } from 'store';
 import { useQuery } from '@tanstack/react-query';
 import { getResource } from 'api';
 import { useStyles } from './styles';
+import { SearchField } from '../SearchField/SearchField';
 export function Navigation() {
     const { classes, cx } = useStyles();
     const scrollAnchorRef = useRef(null);
@@ -54,5 +55,5 @@ export function Navigation() {
     const loadMoreHandler = () => {
         setPageIndex(pageIndex + 1);
     };
-    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [links, _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: _jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading, disabled: (data === null || data === void 0 ? void 0 : data.next) === null }, { children: "Load more" })) }))] })));
+    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, {}) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [links, _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: _jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading, disabled: (data === null || data === void 0 ? void 0 : data.next) === null }, { children: "Load more" })) }))] })));
 }
