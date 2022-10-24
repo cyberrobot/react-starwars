@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getResource, Entity } from 'api';
 import { useStyles } from './styles';
 import { SearchField } from '../SearchField/SearchField';
+import Links from './internal/Links';
 
 export function Navigation() {
   const { classes, cx } = useStyles();
@@ -41,27 +42,6 @@ export function Navigation() {
     }
   }, [compoundData.length, isSuccess]);
 
-  const links = compoundData.map((item: Entity, index: number) => {
-    const name = 'name' in item ? item.name : item.title;
-    return (
-      <a
-        className={cx(classes.link, {
-          [classes.linkActive]:
-            name === currentResourceDetails?.name ||
-            name === currentResourceDetails?.title,
-        })}
-        href=""
-        key={name}
-        onClick={(event) => {
-          event.preventDefault();
-          setCurrentResourceDetails(item);
-        }}
-      >
-        <span>{name}</span>
-      </a>
-    );
-  });
-
   const loadMoreHandler = () => {
     setPageIndex(pageIndex + 1);
   };
@@ -72,7 +52,11 @@ export function Navigation() {
         <SearchField />
       </Navbar.Section>
       <Navbar.Section className={classes.listContainer}>
-        {links}
+        <Links
+          data={compoundData}
+          resourceDetails={currentResourceDetails}
+          onClick={setCurrentResourceDetails}
+        />
         <div ref={scrollAnchorRef}></div>
       </Navbar.Section>
       <Navbar.Section className={classes.navbarFooter}>

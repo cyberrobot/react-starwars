@@ -15,6 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getResource } from 'api';
 import { useStyles } from './styles';
 import { SearchField } from '../SearchField/SearchField';
+import Links from './internal/Links';
 export function Navigation() {
     const { classes, cx } = useStyles();
     const scrollAnchorRef = useRef(null);
@@ -42,18 +43,8 @@ export function Navigation() {
             });
         }
     }, [compoundData.length, isSuccess]);
-    const links = compoundData.map((item, index) => {
-        const name = 'name' in item ? item.name : item.title;
-        return (_jsx("a", Object.assign({ className: cx(classes.link, {
-                [classes.linkActive]: name === (currentResourceDetails === null || currentResourceDetails === void 0 ? void 0 : currentResourceDetails.name) ||
-                    name === (currentResourceDetails === null || currentResourceDetails === void 0 ? void 0 : currentResourceDetails.title),
-            }), href: "", onClick: (event) => {
-                event.preventDefault();
-                setCurrentResourceDetails(item);
-            } }, { children: _jsx("span", { children: name }) }), name));
-    });
     const loadMoreHandler = () => {
         setPageIndex(pageIndex + 1);
     };
-    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, {}) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [links, _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: _jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading, disabled: (data === null || data === void 0 ? void 0 : data.next) === null }, { children: "Load more" })) }))] })));
+    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, {}) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [_jsx(Links, { data: compoundData, resourceDetails: currentResourceDetails, onClick: setCurrentResourceDetails }), _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: _jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading, disabled: (data === null || data === void 0 ? void 0 : data.next) === null }, { children: "Load more" })) }))] })));
 }
