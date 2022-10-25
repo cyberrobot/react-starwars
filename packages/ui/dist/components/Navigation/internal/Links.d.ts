@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import { Entity } from 'api';
 declare type LinksProps = {
-    data: any;
+    data: Entity[] | undefined;
     resourceDetails: Entity | null;
     onClick: (resource: Entity) => void;
 };

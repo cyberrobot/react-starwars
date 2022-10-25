@@ -104,10 +104,10 @@ export declare type Starship = {
     url?: string;
 };
 export declare type Entity = People & Planet & Film & Specie & Vehicle & Starship;
-declare type Resource<T> = {
+export declare type Resource<T> = {
     count: number;
-    next: string;
-    previous: string;
+    next: string | null;
+    previous: string | null;
     results: T[];
 };
 export declare function getResource({ resource, }: {
@@ -117,5 +117,4 @@ export declare function getResourceDetails({ resource, id, }: {
     resource: string;
     id: number;
 }): Promise<Entity>;
-export {};
 //# sourceMappingURL=get-resource.d.ts.map

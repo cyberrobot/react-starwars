@@ -14,9 +14,10 @@ import { useDebouncedValue } from '@mantine/hooks';
 import { useResourceStore } from 'store';
 import { useQuery } from '@tanstack/react-query';
 import { Entity, getResource } from 'api';
+import { Resource } from 'api/dist/data/get-resource/get-resource';
 
 type InputProps = Omit<MantineInputProps, 'onChange'> & {
-  onSearch?: (data: Entity[] | undefined) => void;
+  onSearch?: (data: Resource<Entity> | undefined) => void;
 };
 
 export const SearchField = forwardRef(
@@ -45,9 +46,9 @@ export const SearchField = forwardRef(
 
     useEffect(() => {
       if (typeof onSearch === 'function') {
-        onSearch(data?.results);
+        onSearch(data);
       }
-    }, [data?.results, onSearch]);
+    }, [data, onSearch]);
 
     return (
       <TextInput

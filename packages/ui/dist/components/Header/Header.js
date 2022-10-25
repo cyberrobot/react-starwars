@@ -48,16 +48,13 @@ const useStyles = createStyles((theme) => ({
 }));
 export function HeaderTabs({}) {
     const { classes } = useStyles();
-    const { data } = useQuery(['resources'], () => __awaiter(this, void 0, void 0, function* () { return yield getResources(); }));
+    const { data } = useQuery(['resources'], () => __awaiter(this, void 0, void 0, function* () { return yield getResources(); }), {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
     const setCurrentResource = useResourceStore((state) => state.setCurrentResource);
-    let resources = [];
-    if (data) {
-        resources = Object.keys(data).map((item) => item.charAt(0).toUpperCase() + item.slice(1));
-    }
-    const tabs = [...resources];
-    const items = tabs.map((tab) => (_jsx(Tabs.Tab, Object.assign({ value: tab, onClick: () => {
-            setCurrentResource(tab.toLowerCase());
-        } }, { children: tab }), tab)));
+    let tabs = Object.keys(data || {}).map((item) => item.charAt(0).toUpperCase() + item.slice(1));
+    const items = tabs.map((tab) => (_jsx(Tabs.Tab, Object.assign({ value: tab, onClick: () => setCurrentResource(tab.toLowerCase()) }, { children: tab }), tab)));
     return (_jsx(Header, Object.assign({ height: 50, className: classes.header }, { children: _jsx(Tabs, Object.assign({ defaultValue: "People", variant: "outline", classNames: {
                 root: classes.tabs,
                 tabsList: classes.tabsList,

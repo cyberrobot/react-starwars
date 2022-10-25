@@ -3,7 +3,7 @@ import React from 'react';
 import { useStyles } from '../styles';
 
 type LinksProps = {
-  data: any;
+  data: Entity[] | undefined;
   resourceDetails: Entity | null;
   onClick: (resource: Entity) => void;
 };
@@ -12,7 +12,7 @@ export default function Links({ data, resourceDetails, onClick }: LinksProps) {
   const { classes, cx } = useStyles();
   return (
     <>
-      {data.map((item: Entity, index: number) => {
+      {data?.map((item: Entity, index: number) => {
         const name = 'name' in item ? item.name : item.title;
         return (
           <a

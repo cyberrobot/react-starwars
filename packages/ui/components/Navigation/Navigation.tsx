@@ -6,32 +6,53 @@ import { getResource, Entity } from 'api';
 import { useStyles } from './styles';
 import { SearchField } from '../SearchField/SearchField';
 import Links from './internal/Links';
+import { Resource } from 'api/dist/data/get-resource/get-resource';
 
+// TODO: Fix issue with additional pages
 export function Navigation() {
   const { classes } = useStyles();
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const [pageIndex, setPageIndex] = useState<number>(1);
-  const [compoundData, setCompoundData] = useState<Entity[]>([]);
+  const [resource, setResource] = useState<Resource<Entity>>({
+    count: 0,
+    next: null,
+    previous: null,
+    results: [],
+  });
   const currentResource = useResourceStore((state) => state.currentResource);
   const { isLoading, isSuccess, data } = useQuery(
     ['resource', currentResource, pageIndex],
     async () =>
       await getResource({ resource: `${currentResource}?page=${pageIndex}` }),
+    {
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+    },
   );
   const { currentResourceDetails, setCurrentResourceDetails } =
     useResourceStore((state) => state);
 
   useEffect(() => {
-    setCurrentResourceDetails(null);
-    setCompoundData([]);
     setPageIndex(1);
+    setResource({
+      count: 0,
+      next: null,
+      previous: null,
+      results: [],
+    });
+    setCurrentResourceDetails(null);
   }, [setCurrentResourceDetails, currentResource]);
 
   useEffect(() => {
     if (data) {
-      setCompoundData((prev) => [...prev, ...data?.results]);
+      setResource((prev) => {
+        return {
+          ...data,
+          results: [...prev?.results, ...data?.results],
+        };
+      });
     }
-  }, [data, setCompoundData, pageIndex, isSuccess]);
+  }, [data, pageIndex, setResource]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -40,15 +61,15 @@ export function Navigation() {
         block: 'end',
       });
     }
-  }, [compoundData.length, isSuccess]);
+  }, [resource?.results.length, isSuccess]);
 
   const loadMoreHandler = () => {
     setPageIndex(pageIndex + 1);
   };
 
-  const searchHandler = (data: Entity[] | undefined) => {
+  const searchHandler = (data: Resource<Entity> | undefined) => {
     if (data) {
-      setCompoundData(data);
+      setResource(data);
     }
   };
 
@@ -61,21 +82,24 @@ export function Navigation() {
         />
       </Navbar.Section>
       <Navbar.Section className={classes.listContainer}>
-        <Links
-          data={compoundData}
-          resourceDetails={currentResourceDetails}
-          onClick={setCurrentResourceDetails}
-        />
+        {
+          <Links
+            data={resource?.results}
+            resourceDetails={currentResourceDetails}
+            onClick={setCurrentResourceDetails}
+          />
+        }
         <div ref={scrollAnchorRef}></div>
       </Navbar.Section>
       <Navbar.Section className={classes.navbarFooter}>
-        <Button
-          onClick={loadMoreHandler}
-          loading={isLoading}
-          disabled={data?.next === null}
-        >
-          Load more
-        </Button>
+        {resource?.next !== null && (
+          <Button
+            onClick={loadMoreHandler}
+            loading={isLoading}
+          >
+            Load more
+          </Button>
+        )}
       </Navbar.Section>
     </Navbar>
   );

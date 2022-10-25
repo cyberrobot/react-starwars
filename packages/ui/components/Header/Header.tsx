@@ -53,33 +53,33 @@ interface HeaderTabsProps {}
 
 export function HeaderTabs({}: HeaderTabsProps) {
   const { classes } = useStyles();
-  const { data } = useQuery(['resources'], async () => await getResources());
+  const { data } = useQuery(['resources'], async () => await getResources(), {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
   const setCurrentResource = useResourceStore(
-    (state) => state.setCurrentResource
+    (state) => state.setCurrentResource,
   );
 
-  let resources: string[] = [];
-  if (data) {
-    resources = Object.keys(data).map(
-      (item) => item.charAt(0).toUpperCase() + item.slice(1)
-    );
-  }
-  const tabs = [...resources];
+  let tabs: string[] = Object.keys(data || {}).map(
+    (item) => item.charAt(0).toUpperCase() + item.slice(1),
+  );
 
   const items = tabs.map((tab) => (
     <Tabs.Tab
       value={tab}
       key={tab}
-      onClick={() => {
-        setCurrentResource(tab.toLowerCase());
-      }}
+      onClick={() => setCurrentResource(tab.toLowerCase())}
     >
       {tab}
     </Tabs.Tab>
   ));
 
   return (
-    <Header height={50} className={classes.header}>
+    <Header
+      height={50}
+      className={classes.header}
+    >
       <Tabs
         defaultValue="People"
         variant="outline"

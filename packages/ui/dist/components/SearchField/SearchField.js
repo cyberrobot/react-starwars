@@ -46,9 +46,9 @@ export const SearchField = forwardRef((props, ref) => {
     });
     useEffect(() => {
         if (typeof onSearch === 'function') {
-            onSearch(data === null || data === void 0 ? void 0 : data.results);
+            onSearch(data);
         }
-    }, [data === null || data === void 0 ? void 0 : data.results, onSearch]);
+    }, [data, onSearch]);
     return (_jsx(TextInput, Object.assign({}, inputProps, rest, { ref: ref, rightSection: isFetching && _jsx(Loader, { size: "xs" }) })));
 });
 SearchField.displayName = ' SearchField';
