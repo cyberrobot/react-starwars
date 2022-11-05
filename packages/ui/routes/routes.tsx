@@ -3,7 +3,7 @@ import { Resources } from '../pages/resources';
 
 export const routes: Route[] = [
   {
-    path: '/',
+    path: ':resource',
     element: <Resources />,
   },
 ];

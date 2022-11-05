@@ -7,19 +7,23 @@ import { useStyles } from './styles';
 import { SearchField } from '../SearchField/SearchField';
 import Links from './internal/Links';
 import { Resource } from 'api/dist/data/get-resource/get-resource';
+import { useMatch, useNavigate } from '@tanstack/react-location';
 
 // TODO: Fix issue with additional pages
 export function Navigation() {
   const { classes } = useStyles();
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
+  const {
+    params: { resource: currentResource },
+  } = useMatch();
   const [pageIndex, setPageIndex] = useState<number>(1);
-  const [resource, setResource] = useState<Resource<Entity>>({
+  const [resourceData, setResourceData] = useState<Resource<Entity>>({
     count: 0,
     next: null,
     previous: null,
     results: [],
   });
-  const currentResource = useResourceStore((state) => state.currentResource);
+  const navigate = useNavigate();
   const { isLoading, isSuccess, data } = useQuery(
     ['resource', currentResource, pageIndex],
     async () =>
@@ -34,7 +38,7 @@ export function Navigation() {
 
   useEffect(() => {
     setPageIndex(1);
-    setResource({
+    setResourceData({
       count: 0,
       next: null,
       previous: null,
@@ -45,14 +49,14 @@ export function Navigation() {
 
   useEffect(() => {
     if (data) {
-      setResource((prev) => {
+      setResourceData((prev) => {
         return {
           ...data,
           results: [...prev?.results, ...data?.results],
         };
       });
     }
-  }, [data, pageIndex, setResource]);
+  }, [data, pageIndex, setResourceData]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -61,7 +65,7 @@ export function Navigation() {
         block: 'end',
       });
     }
-  }, [resource?.results.length, isSuccess]);
+  }, [resourceData?.results.length, isSuccess]);
 
   const loadMoreHandler = () => {
     setPageIndex(pageIndex + 1);
@@ -69,7 +73,7 @@ export function Navigation() {
 
   const searchHandler = (data: Resource<Entity> | undefined) => {
     if (data) {
-      setResource(data);
+      setResourceData(data);
     }
   };
 
@@ -84,7 +88,7 @@ export function Navigation() {
       <Navbar.Section className={classes.listContainer}>
         {
           <Links
-            data={resource?.results}
+            data={resourceData?.results}
             resourceDetails={currentResourceDetails}
             onClick={setCurrentResourceDetails}
           />
@@ -92,7 +96,7 @@ export function Navigation() {
         <div ref={scrollAnchorRef}></div>
       </Navbar.Section>
       <Navbar.Section className={classes.navbarFooter}>
-        {resource?.next !== null && (
+        {resourceData?.next !== null && (
           <Button
             onClick={loadMoreHandler}
             loading={isLoading}

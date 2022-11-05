@@ -16,18 +16,20 @@ import { getResource } from 'api';
 import { useStyles } from './styles';
 import { SearchField } from '../SearchField/SearchField';
 import Links from './internal/Links';
+import { useMatch, useNavigate } from '@tanstack/react-location';
 // TODO: Fix issue with additional pages
 export function Navigation() {
     const { classes } = useStyles();
     const scrollAnchorRef = useRef(null);
+    const { params: { resource: currentResource }, } = useMatch();
     const [pageIndex, setPageIndex] = useState(1);
-    const [resource, setResource] = useState({
+    const [resourceData, setResourceData] = useState({
         count: 0,
         next: null,
         previous: null,
         results: [],
     });
-    const currentResource = useResourceStore((state) => state.currentResource);
+    const navigate = useNavigate();
     const { isLoading, isSuccess, data } = useQuery(['resource', currentResource, pageIndex], () => __awaiter(this, void 0, void 0, function* () { return yield getResource({ resource: `${currentResource}?page=${pageIndex}` }); }), {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
@@ -35,7 +37,7 @@ export function Navigation() {
     const { currentResourceDetails, setCurrentResourceDetails } = useResourceStore((state) => state);
     useEffect(() => {
         setPageIndex(1);
-        setResource({
+        setResourceData({
             count: 0,
             next: null,
             previous: null,
@@ -45,11 +47,11 @@ export function Navigation() {
     }, [setCurrentResourceDetails, currentResource]);
     useEffect(() => {
         if (data) {
-            setResource((prev) => {
+            setResourceData((prev) => {
                 return Object.assign(Object.assign({}, data), { results: [...prev === null || prev === void 0 ? void 0 : prev.results, ...data === null || data === void 0 ? void 0 : data.results] });
             });
         }
-    }, [data, pageIndex, setResource]);
+    }, [data, pageIndex, setResourceData]);
     useEffect(() => {
         var _a;
         if (isSuccess) {
@@ -58,14 +60,14 @@ export function Navigation() {
                 block: 'end',
             });
         }
-    }, [resource === null || resource === void 0 ? void 0 : resource.results.length, isSuccess]);
+    }, [resourceData === null || resourceData === void 0 ? void 0 : resourceData.results.length, isSuccess]);
     const loadMoreHandler = () => {
         setPageIndex(pageIndex + 1);
     };
     const searchHandler = (data) => {
         if (data) {
-            setResource(data);
+            setResourceData(data);
         }
     };
-    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, { placeholder: `Search ${currentResource}...`, onSearch: searchHandler }) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [_jsx(Links, { data: resource === null || resource === void 0 ? void 0 : resource.results, resourceDetails: currentResourceDetails, onClick: setCurrentResourceDetails }), _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: (resource === null || resource === void 0 ? void 0 : resource.next) !== null && (_jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading }, { children: "Load more" }))) }))] })));
+    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, { placeholder: `Search ${currentResource}...`, onSearch: searchHandler }) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [_jsx(Links, { data: resourceData === null || resourceData === void 0 ? void 0 : resourceData.results, resourceDetails: currentResourceDetails, onClick: setCurrentResourceDetails }), _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: (resourceData === null || resourceData === void 0 ? void 0 : resourceData.next) !== null && (_jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading }, { children: "Load more" }))) }))] })));
 }
