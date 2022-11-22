@@ -16,12 +16,12 @@ import { getResource } from 'api';
 import { useStyles } from './styles';
 import { SearchField } from '../SearchField/SearchField';
 import Links from './internal/Links';
-import { useMatch, useNavigate } from '@tanstack/react-location';
+import { useMatch } from '@tanstack/react-location';
 // TODO: Fix issue with additional pages
 export function Navigation() {
     const { classes } = useStyles();
     const scrollAnchorRef = useRef(null);
-    const { params: { resource: currentResource }, } = useMatch();
+    const { params: { resource: currentResource, id: currentId }, } = useMatch();
     const [pageIndex, setPageIndex] = useState(1);
     const [resourceData, setResourceData] = useState({
         count: 0,
@@ -29,12 +29,11 @@ export function Navigation() {
         previous: null,
         results: [],
     });
-    const navigate = useNavigate();
     const { isLoading, isSuccess, data } = useQuery(['resource', currentResource, pageIndex], () => __awaiter(this, void 0, void 0, function* () { return yield getResource({ resource: `${currentResource}?page=${pageIndex}` }); }), {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
-    const { currentResourceDetails, setCurrentResourceDetails } = useResourceStore((state) => state);
+    const { setCurrentResourceDetails } = useResourceStore((state) => state);
     useEffect(() => {
         setPageIndex(1);
         setResourceData({
@@ -61,6 +60,9 @@ export function Navigation() {
             });
         }
     }, [resourceData === null || resourceData === void 0 ? void 0 : resourceData.results.length, isSuccess]);
+    useEffect(() => {
+        setCurrentResourceDetails(resourceData === null || resourceData === void 0 ? void 0 : resourceData.results[Number(currentId) - 1]);
+    }, [resourceData, currentId, setCurrentResourceDetails]);
     const loadMoreHandler = () => {
         setPageIndex(pageIndex + 1);
     };
@@ -69,5 +71,5 @@ export function Navigation() {
             setResourceData(data);
         }
     };
-    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, { placeholder: `Search ${currentResource}...`, onSearch: searchHandler }) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [_jsx(Links, { data: resourceData === null || resourceData === void 0 ? void 0 : resourceData.results, resourceDetails: currentResourceDetails, onClick: setCurrentResourceDetails }), _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: (resourceData === null || resourceData === void 0 ? void 0 : resourceData.next) !== null && (_jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading }, { children: "Load more" }))) }))] })));
+    return (_jsxs(Navbar, Object.assign({ className: classes.container }, { children: [_jsx(Navbar.Section, Object.assign({ className: classes.searchContainer }, { children: _jsx(SearchField, { placeholder: `Search ${currentResource}...`, onSearch: searchHandler }) })), _jsxs(Navbar.Section, Object.assign({ className: classes.listContainer }, { children: [_jsx(Links, { data: resourceData === null || resourceData === void 0 ? void 0 : resourceData.results }), _jsx("div", { ref: scrollAnchorRef })] })), _jsx(Navbar.Section, Object.assign({ className: classes.navbarFooter }, { children: (resourceData === null || resourceData === void 0 ? void 0 : resourceData.next) !== null && (_jsx(Button, Object.assign({ onClick: loadMoreHandler, loading: isLoading }, { children: "Load more" }))) }))] })));
 }

@@ -1,3 +1,4 @@
+import { useMatch } from '@tanstack/react-location';
 import { useResourceStore } from 'store';
 import { Film } from './internal/Film';
 import { People } from './internal/People';
@@ -11,9 +12,10 @@ type EntityDetailsProps = {};
 
 export function EntityDetails({}: EntityDetailsProps) {
   const { classes } = useStyles();
-  const { currentResource, currentResourceDetails } = useResourceStore(
-    (state) => state,
-  );
+  const { currentResourceDetails } = useResourceStore((state) => state);
+  const {
+    params: { resource: currentResource },
+  } = useMatch();
 
   return (
     <div className={classes.page}>

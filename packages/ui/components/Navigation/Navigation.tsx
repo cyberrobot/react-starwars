@@ -7,14 +7,14 @@ import { useStyles } from './styles';
 import { SearchField } from '../SearchField/SearchField';
 import Links from './internal/Links';
 import { Resource } from 'api/dist/data/get-resource/get-resource';
-import { useMatch, useNavigate } from '@tanstack/react-location';
+import { useMatch } from '@tanstack/react-location';
 
 // TODO: Fix issue with additional pages
 export function Navigation() {
   const { classes } = useStyles();
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const {
-    params: { resource: currentResource },
+    params: { resource: currentResource, id: currentId },
   } = useMatch();
   const [pageIndex, setPageIndex] = useState<number>(1);
   const [resourceData, setResourceData] = useState<Resource<Entity>>({
@@ -23,7 +23,6 @@ export function Navigation() {
     previous: null,
     results: [],
   });
-  const navigate = useNavigate();
   const { isLoading, isSuccess, data } = useQuery(
     ['resource', currentResource, pageIndex],
     async () =>
@@ -33,8 +32,7 @@ export function Navigation() {
       refetchOnWindowFocus: false,
     },
   );
-  const { currentResourceDetails, setCurrentResourceDetails } =
-    useResourceStore((state) => state);
+  const { setCurrentResourceDetails } = useResourceStore((state) => state);
 
   useEffect(() => {
     setPageIndex(1);
@@ -67,6 +65,10 @@ export function Navigation() {
     }
   }, [resourceData?.results.length, isSuccess]);
 
+  useEffect(() => {
+    setCurrentResourceDetails(resourceData?.results[Number(currentId) - 1]);
+  }, [resourceData, currentId, setCurrentResourceDetails]);
+
   const loadMoreHandler = () => {
     setPageIndex(pageIndex + 1);
   };
@@ -86,13 +88,7 @@ export function Navigation() {
         />
       </Navbar.Section>
       <Navbar.Section className={classes.listContainer}>
-        {
-          <Links
-            data={resourceData?.results}
-            resourceDetails={currentResourceDetails}
-            onClick={setCurrentResourceDetails}
-          />
-        }
+        {<Links data={resourceData?.results} />}
         <div ref={scrollAnchorRef}></div>
       </Navbar.Section>
       <Navbar.Section className={classes.navbarFooter}>

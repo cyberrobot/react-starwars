@@ -5,5 +5,11 @@ export const routes: Route[] = [
   {
     path: ':resource',
     element: <Resources />,
+    children: [
+      {
+        path: ':id',
+        element: <Resources />,
+      },
+    ],
   },
 ];

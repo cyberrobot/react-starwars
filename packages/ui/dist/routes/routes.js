@@ -4,5 +4,11 @@ export const routes = [
     {
         path: ':resource',
         element: _jsx(Resources, {}),
+        children: [
+            {
+                path: ':id',
+                element: _jsx(Resources, {}),
+            },
+        ],
     },
 ];
